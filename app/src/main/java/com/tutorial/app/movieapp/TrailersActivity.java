@@ -109,19 +109,12 @@ public class TrailersActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        //getMenuInflater().inflate(R.menu.menu_details, menu);
         return true;
     }
 
     public class TrailersTask extends AsyncTask<String, Void, JSONObject[]> {
 
-    //https://api.themoviedb.org/3/movie/157336/videos?api_key=7a3d82f40add8205d2dec33bc580975d
-    //ex to get trailers
-
         private final String LOG_TAG = TrailersTask.class.getSimpleName();
-        private final String BASE_URL = "https://api.themoviedb.org/3/movie/";
-        private final String API_KEY = "7a3d82f40add8205d2dec33bc580975d";
         private final String PATH_VIDEOS = "videos";
         private final String QUERY_PARAM = "api_key";
 
@@ -142,8 +135,8 @@ public class TrailersActivity extends AppCompatActivity {
 
             try {
 
-                Uri builtUri = Uri.parse(BASE_URL).buildUpon().appendPath(movieId).appendPath(PATH_VIDEOS)
-                        .appendQueryParameter(QUERY_PARAM, API_KEY)
+                Uri builtUri = Uri.parse(Utility.BASE_URL).buildUpon().appendPath(movieId).appendPath(PATH_VIDEOS)
+                        .appendQueryParameter(QUERY_PARAM, Utility.API_KEY)
                         .build();
 
                 URL url = new URL(builtUri.toString());

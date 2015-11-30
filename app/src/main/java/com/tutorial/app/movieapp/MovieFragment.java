@@ -108,11 +108,7 @@ public class MovieFragment extends Fragment {
 
     public class MovieTask extends AsyncTask<String, Void, JSONObject[]> {
 
-        //https://api.themoviedb.org/3/movie/157336/videos?api_key=7a3d82f40add8205d2dec33bc580975d
-
         private final String LOG_TAG = MovieTask.class.getSimpleName();
-        private final String BASE_URL = "https://api.themoviedb.org/3/movie/";
-        private final String API_KEY = "7a3d82f40add8205d2dec33bc580975d";
         private final String TITLE = "title";
         private final String POSTER_PATH = "poster_path";
         private final String PLOT = "overview";
@@ -189,8 +185,8 @@ public class MovieFragment extends Fragment {
                 try {
                     final String QUERY_PARAM = "api_key";
 
-                    Uri builtUri = Uri.parse(BASE_URL).buildUpon().appendPath(params[0])
-                            .appendQueryParameter(QUERY_PARAM, API_KEY)
+                    Uri builtUri = Uri.parse(Utility.BASE_URL).buildUpon().appendPath(params[0])
+                            .appendQueryParameter(QUERY_PARAM, Utility.API_KEY)
                             .build();
 
                     URL url = new URL(builtUri.toString());

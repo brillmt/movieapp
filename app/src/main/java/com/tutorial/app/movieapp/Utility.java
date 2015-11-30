@@ -5,6 +5,7 @@ package com.tutorial.app.movieapp;
  */
 public class Utility {
 
-
+    public static final String BASE_URL = "https://api.themoviedb.org/3/movie/";
+    public static final String API_KEY = "";
 
 }
