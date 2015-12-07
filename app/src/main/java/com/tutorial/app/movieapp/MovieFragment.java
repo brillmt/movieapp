@@ -1,6 +1,5 @@
 package com.tutorial.app.movieapp;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -16,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import com.tutorial.app.movieapp.model.Movie;
 
@@ -45,6 +45,7 @@ public class MovieFragment extends Fragment {
     private final String LOG_TAG = MovieFragment.class.getSimpleName();
     private List<JSONObject> imageList = new ArrayList<>();
     private ImageAdapter ia;
+    private boolean mUseTodayLayout;
 //    @Bind(R.id.grid_view_layout_main) GridView listView;
 
 
@@ -82,15 +83,32 @@ public class MovieFragment extends Fragment {
 
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                /**
+                 * BEFORE RESPONSIVE REFACTOR
+                 */
                 JSONObject js = imageList.get(position);
-                Intent intent = new Intent(getActivity(), DetailsActivity.class)
-                        .putExtra(Intent.EXTRA_TEXT, js.toString());
-                startActivity(intent);
+//                Intent intent = new Intent(getActivity(), DetailsActivity.class)
+//                        .putExtra(Intent.EXTRA_TEXT, js.toString());
+//                startActivity(intent);
+
+
+                /**
+                 * AFTER RESPONSIVE REFACTOR
+                 */
+                ((Callback) getActivity()).onItemSelected(js);
+
+                Toast.makeText(getActivity(), "CLICKING MOVIE", Toast.LENGTH_SHORT).show();
             }
         });
 
-
         return rootView;
+    }
+
+    public interface Callback {
+        /**
+         * DetailFragmentCallback for when an item has been selected.
+         */
+        public void onItemSelected(JSONObject js);
     }
 
     @Override
@@ -104,6 +122,13 @@ public class MovieFragment extends Fragment {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String sortByPreference = prefs.getString(getString(R.string.pref_sort_key), getString(R.string.pref_sort_default));
         new MovieTask().execute(sortByPreference);
+    }
+
+    public void setUseTodayLayout(boolean useTodayLayout) {
+        mUseTodayLayout = useTodayLayout;
+//        if (mForecastAdapter != null) {
+//            mForecastAdapter.setUseTodayLayout(mUseTodayLayout);
+//        }
     }
 
     public class MovieTask extends AsyncTask<String, Void, JSONObject[]> {
@@ -143,14 +168,12 @@ public class MovieFragment extends Fragment {
 
             //if favorite get from local DB
             if (params[0].equalsIgnoreCase(getString(R.string.pref_sort_favorites))){
-                Log.e(LOG_TAG, "Call from local db");
 
                 Realm realm = Realm.getInstance(getActivity());
                 RealmQuery<Movie> query = realm.where(Movie.class);
                 RealmResults<Movie> list = query.findAll();
 
                 if (list.size() > 0) {
-                    Log.e(LOG_TAG, list.size() + " LIST SIZE");
                     JSONObject[] resultStrs = new JSONObject[list.size()];
 
                     Log.e(LOG_TAG, list.size() + "");
@@ -248,6 +271,9 @@ public class MovieFragment extends Fragment {
                 for(JSONObject str : result) {
                     imageList.add(str);
                 }
+                ia.notifyDataSetChanged();
+            } else {
+                imageList.clear();
                 ia.notifyDataSetChanged();
             }
         }

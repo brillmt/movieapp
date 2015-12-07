@@ -28,7 +28,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/favorite"
                 android:id="@+id/check_box_favorite"
-                android:layout_weight=".25"/>
+                android:layout_weight=".25"
+                android:visibility="invisible"/>
 
         </LinearLayout>
 
@@ -61,13 +62,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/button_trailer"
-                    android:id="@+id/button_watch_trailer"/>
+                    android:id="@+id/button_watch_trailer"
+                    android:visibility="invisible"/>
 
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/button_review"
-                    android:id="@+id/button_reviews"/>
+                    android:id="@+id/button_reviews"
+                    android:visibility="invisible"/>
 
 
 
